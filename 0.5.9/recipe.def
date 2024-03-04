@@ -1,0 +1,22 @@
+Bootstrap: docker
+From: debian:latest
+
+%labels
+    AUTHOR icaoberg
+    EMAIL icaoberg@psc.edu
+    SUPPORT help@psc.edu
+    REPOSITORY http://gitub.com/pscedu/apptainer-lowcharts
+    COPYRIGHT Copyright © 2021 Pittsburgh Supercomputing Center. All Rights Reserved.  
+    VERSION 0.5.9
+
+%post
+    apt update
+    apt install -y wget
+    cd /opt
+    wget -nc https://github.com/juan-leon/lowcharts/releases/download/v0.5.9/lowcharts_0.5.9-1_amd64.deb
+    dpkg -i lowcharts_0.5.9-1_amd64.deb
+    rm -f lowcharts_0.5.9-1_amd64.deb
+    apt clean
+
+%runscript
+    lowcharts "$@"
