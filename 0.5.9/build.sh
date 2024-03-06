@@ -6,6 +6,13 @@
 IMAGE=apptainer-lowcharts-0.5.9.sif
 DEFINITION=recipe.def
 
-apptainer build -F $IMAGE $DEFINITION
+if [ ! -f $IMAGE ]; then
+	apptainer build $IMAGE $DEFINITION
+fi
 
-python3 -c 'import random; [print(random.normalvariate(5, 5)) for _ in range(100000)]' | ./apptainer-lowcharts-0.5.9.sif hist:
+python3 -c 'import random; [print(random.normalvariate(5, 5)) for _ in range(100000)]' > data.txt
+./apptainer-lowcharts-0.5.9.sif hist data.txt
+
+if [ -f data.txt ]; then
+	rm -f data.txt
+fi
